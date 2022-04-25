@@ -16,6 +16,20 @@ app.post("/sign-up", (req, res) => {
   res.send("OK");
 });
 
+app.get("/tweets",(req,res)=> {
+
+    let sendTweets = tweets.filter((data, index)=>{
+      if(index > (tweets.length - 11)){
+        return true;
+      } else{
+        return false;
+      }
+      
+    });
+    res.send(sendTweets.reverse());
+  
+  });
+
 app.post("/tweets", (req, res) => {
     const {username, tweet} = req.body;
     if (!username || !tweet) return res.sendStatus(422);
