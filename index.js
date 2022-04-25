@@ -31,11 +31,18 @@ app.get("/tweets",(req,res)=> {
 
 app.post("/tweets", (req, res) => {
     const {username, tweet} = req.body;
-    if (!username || !tweet) return res.sendStatus(422);
+    if (!username || !tweet) return res.status(400).send("Todos os campos são obrigatórios!");
     const user = users.find(user => user.username===username);
     tweets.unshift({username, tweet, avatar: user.avatar});
     res.send("OK");
 });
 
+app.get("/tweets/:username", (req, res) => {
+    const {username} = req.params;
+    const user = users.find(user => user.username===username);
+    if (!user) return res.status(404).send("User não encontrado");
+    const userTweets = tweets.filter(tweet => tweet.username===username);
+    res.send(userTweets);
+});
 
 app.listen(5000);
